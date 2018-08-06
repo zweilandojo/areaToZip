@@ -4,23 +4,51 @@
   <meta charset="UTF-8">
   <title>Area to Zip Conversion</title>
   <link rel="shortcut icon" href="favicon.ico">
-  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="styles/styles.css">
 </head>
 </html>
 <body>
 
   <section id="agent-areatozip-form">
-      <label>Convert Areas to Zips</label>
+      <h2>Convert Areas to Zips</h2>
+      <div class="mt-4 mb-4">
+        <input type="file" id="fileInput" onclick="Upload();">
+        <pre id="fileDisplayArea"></pre>
+      </div>
       <textarea id="areasToConvert"></textarea>
       <button onclick="showZips();">Convert</button>
   </section>
 
   <hr />
 
-  <div>
-    <label>Converted Zips</label>
+  <main>
+    <h3>Converted Zips</h3>
     <p id="convertedZips"></p>
-  </div>
+  </main>
 
-  <script src="app.js"></script>
+  <script type="text/javascript" src="js/app.js"></script>
+  <script type="text/javascript">
+    window.onload = function() {
+      var fileInput = document.getElementById('fileInput');
+      var fileDisplayArea = document.getElementById('fileDisplayArea');
+
+      fileInput.addEventListener('change', function(e) {
+        var file = fileInput.files[0];
+        var textType = /text.*/;
+
+        if (file.type.match(textType)) {
+            var reader = new FileReader();
+
+            reader.onload = function(e) {
+                fileDisplayArea.innerText = reader.result;
+            }
+
+            reader.readAsText(file);
+        } else {
+            fileDisplayArea.innerText = "File not supported!"
+        }
+
+      });
+    }
+  </script>
 </body>
