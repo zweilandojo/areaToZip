@@ -1,0 +1,12 @@
+var agent = {
+  "first_name" : "Jason",
+  "last_name" : "Soto",
+  "phone" : "5126674357",
+  "email" : "jsoto@homecity.com",
+  "priceMin" : "$200,000+",
+  "priceMax" : "$1,000,000+",
+  "brokerage" : "Better Homes & Gardens Real Estate HomeCity",
+  "preferredBuyerType" : "First-time buyers, Have previously bought",
+  "languages" : "English",
+  "areasServed": "Austin - Central, Austin - North West, Austin - East, Austin - South East, Austin - South, Austin - South West, Austin - West/Westlake, Lake Travis - South Shore, Lake Travis - North Shore, Georgetown, Round Rock, Pflugerville, Cedar Park/Leander/Liberty Hill, Manor/Elgin, Hutto/Taylor/Coupland, Dripping Springs/Wimberley, Kyle/Buda/San Marcos, Austin - North Central"
+};

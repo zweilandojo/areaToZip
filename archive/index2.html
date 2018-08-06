@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Region / Zip Dictionary</title>
+  <link rel="shortcut icon" href="favicon.ico">
+  <style type="text/css">
+    * {
+      margin: 0;
+      padding: 0;
+      font-family: "Sofia Pro", sans-serif;
+    }
+    form {
+      padding: 5%;
+    }
+    textarea {
+      border: 1px solid #d8d8d8;
+      background: #fafafa;
+      border-radius: 14px;
+      display: block;
+      margin: .5rem 0;
+      width: 100%;
+      height: 8rem;
+    }
+    input[type=submit] {
+      font-size: 1rem;
+      padding: 1rem 1rem;
+      border: 1px solid #3366FF;
+      border-radius: 30px;
+      color: white;
+      background: #3366FF;
+      width: 100%;
+      display: block;
+      -webkit-appearance: button;
+      cursor: pointer;
+    }
+    div {
+      padding: 5%;
+      line-height: 1.5rem;
+    }
+    div span {
+      color: #BDBDBD;
+      font-style: italic;
+      display: block;
+    }
+  </style>
+</head>
+</html>
+<body>
+
+  <form action="/" method="post" id="agent-areatozip-form">
+      <label>Convert Areas to Zips</label>
+      <textarea></textarea>
+      <input type="submit">
+  </form>
+
+  <div>
+    <label>Converted Zips</label>
+    <label id="convertedZips">
+      <span>Nothing converted yet.</span>
+    </label>
+  </div>
+
+  <script>
+    // Import Area to Zip Code JSON
+    // function loadJSON(callback) {
+    //   var xobj = new XMLHttpRequest();
+    //       xobj.overrideMimeType("application/json");
+    //   xobj.open('GET', 'area_zip_austin.json', true); // Replace 'my_data' with the path to your file
+    //   xobj.onreadystatechange = function () {
+    //       if (xobj.readyState == 4 && xobj.status == "200") {
+    //         // Required use of an anonymous callback as .open will NOT return a value but simply returns undefined in asynchronous mode
+    //         callback(xobj.responseText);
+    //       }
+    //   };
+    //   xobj.send(null);
+    // }
+
+    // Define Agent Areas
+    let agentAreas = "Austin - Central, Austin - North West, Austin - East, Austin - South East, Austin - South, Austin - South West, Austin - West/Westlake, Lake Travis - South Shore, Lake Travis - North Shore, Georgetown, Round Rock, Pflugerville, Cedar Park/Leander/Liberty Hill, Manor/Elgin, Hutto/Taylor/Coupland, Dripping Springs/Wimberley, Kyle/Buda/San Marcos, Austin - North Central";
+    //console.log(agentAreas);
+    let agentAreasArr = agentAreas.split(',');
+    //console.log(agentAreasArr);
+
+    loadJSON(function(response) {
+      // Parse JSON string into object
+      let a2z = JSON.parse(response);
+      //console.log(a2z);
+
+      // find keys
+      let a2zKeys = Object.keys(a2z);
+      //console.log(a2zKeys);
+
+      // find values
+      let a2zValues = Object.values(a2z);
+      //console.log(a2zValues);
+
+      let areaArray = [];
+
+      function compare(arr1,arr2) {
+        const finalArray = [];
+        arr1.forEach((e1)=>arr2.forEach((e2)=>
+          {
+            if(e1 === e2){
+              finalArray.push(e1)
+            }
+          }
+        ));
+        return finalArray;
+      };
+
+      for(var i = 0; i < agentAreasArr.length; i++) {
+         agentAreasArr[i] = agentAreasArr[i].replace(/^\s*/, "").replace(/\s*$/, "");
+         areaArray.push(agentAreasArr[i]);
+      };
+
+      let combinedAreasArr = compare(a2zKeys, areaArray);
+
+      var agentJsonObj = {};
+      for (var i = 0 ; i < combinedAreasArr.length; i++) {
+          agentJsonObj["position" + (i+1)] = combinedAreasArr[i];
+      }
+
+      // console.log(combinedAreasArr);
+
+      // find keys
+      let combinedAreasArrKeys = Object.keys(combinedAreasArr);
+      //console.log(combinedAreasArrKeys);
+
+      // find values
+      let combinedAreasArrValues = Object.values(combinedAreasArr);
+      //console.log(combinedAreasArrValues);
+
+      // find max length to iterate
+    	if(a2zKeys.length > combinedAreasArrKeys.length) {
+    		var biggestKey = a2zKeys.length;
+    	} else {
+    		var biggestKey = combinedAreasArrKeys.length;
+    	}
+
+
+      const austin = [
+          {area: 'All', zips: '76530, 76574, 78602, 78610, 78612, 78613, 78615, 78616, 78617, 78619, 78620, 78621, 78626, 78628, 78632, 78633, 78634, 78640, 78641, 78642, 78644, 78645, 78648, 78650, 78652, 78653, 78654, 78655, 78656, 78659, 78660, 78664, 78665, 78666, 78669, 78676, 78681, 78701, 78702, 78703, 78704, 78705, 78712, 78717, 78719, 78721, 78722, 78723, 78724, 78725, 78726, 78727, 78729, 78730, 78731, 78732, 78733, 78734, 78735, 78736, 78737, 78738, 78739, 78741, 78742, 78744, 78745, 78746, 78747, 78748, 78749, 78750, 78751, 78752, 78753, 78754, 78756, 78759, 78957'},
+          {area: 'Austin - Central', zips: '78701, 78703, 78712, 78731, 78705, 78751, 78756'},
+          {area: 'Austin - North West', zips: '78731, 78730, 78750, 78726, 78759, 78729, 78727'},
+          {area: 'Austin - North Central', zips: '78757, 78753, 78727, 78729, 78681, 78728, 78752, 78758'},
+          {area: 'Austin - East', zips: '78702, 78722, 78723, 78752, 78753, 78754, 78724, 78721, 78725, 78659'},
+          {area: 'Austin - South East', zips: '78741, 78742, 78744, 78747, 78719, 78617'},
+          {area: 'Austin - South', zips: '78704, 78745, 78749, 78748'},
+          {area: 'Austin - South West', zips: '78748, 78652, 78739, 78737, 78749'},
+          {area: 'Austin - West/Westlake', zips: '78735, 78736, 78746, 78730, 78732, 78726, 78733'},
+          {area: 'Lake Travis - South Shore', zips: '78738, 78734, 78669'},
+          {area: 'Lake Travis - North Shore', zips: '78645, 78641, 78654'},
+          {area: 'Pflugerville', zips: '78659, 78753, 78754, 78660, 78664'},
+          {area: 'Georgetown', zips: '78628, 78633, 78626, 76530'},
+          {area: 'Round Rock', zips: '78665, 78664, 78681, 78717, 78613'},
+          {area: 'Manor/Elgin', zips: '78653, 78621, 78650'},
+          {area: 'Hutto/Taylor/Coupland', zips: '78634, 76574, 78615'},
+          {area: 'Bastrop/Smithville', zips: '78617, 78612, 78602, 78957'},
+          {area: 'Dripping Springs/Wimberley', zips: '78620, 78737, 78619, 78676'},
+          {area: 'Kyle/Buda/San Marcos', zips: '78610, 78640, 78644, 78656, 78666, 78655'},
+          {area: 'Caldwell/Fayetteville', zips: '78644, 78616, 78648, 78632'},
+          {area: 'Cedar Park/Leander/Liberty Hill', zips: '78613, 78641, 78642, 78717'}
+      ];
+
+      console.log(combinedAreasArrValues);
+
+      // const result = austin.find( areaToZips => areaToZips.area === 'Austin - South East' );
+
+      // console.log(result) // { area: 'Austin - ', zips: '78757' }
+
+
+    });
+  </script>
+
+</body>
